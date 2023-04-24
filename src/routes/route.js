@@ -1,98 +1,46 @@
 const express = require('express');
 const { route } = require('express/lib/application');
-const router = express.Router();
+const app = express.Router();
 const commonFile = require('./common')
 const myUnderscore = require('underscore')
+// Q1.
+// -write an api which gives the missing number in an array of integers starting from 1….e.g [1,2,3,5,6,7] : 4 is missing
+// Your route code will look like this
+app.get("/sol1", function (req, res) {
+    //logic : sum of numbers is n(n+1)/2..so get sum of all numbers in array. now take sum of numbers till last digit in the array
+    ///LOGIC WILL GO HERE 
+    let arr= [1,2,3,4,5,6,8]
+    let n = arr.length + 1;
+    let sumOfNumbers = (n * (n + 1)) / 2;
+    let sumOfArray = arr.reduce((acc, num) => acc + num, 0); 
+    let missingNumber = sumOfNumbers - sumOfArray; 
+    
+    
+    res.send(  { data: missingNumber  }  );
+});
 
-// router.get('/test-me', function (req, res) {
-//     res.send('This should be working!')
-// });
 
-// router.get('/test-you', function (req, res) {
-//     console.log('The exported module is: ',commonFile)
-//     commonFile.doSomething()
-//     console.log('This is the constant I created', commonFile.name)
-//     res.send('Hello there, welcome to this application!')
-// });
+// Q2. 
+// -write an api which gives the missing number in an array of integers starting from anywhere….e.g [33, 34, 35, 37, 38]: 36 is missing
+// Your route code will look like this
+app.get("/sol2", function (req, res) {
+        //logic : sum of n consecutive numbers is [ n * (first + last) / 2  ]..so get sum of all numbers in array. now take sum of n consecutive numbers.. n would be length+1 as 1 number is missing
+        ///LOGIC WILL GO HERE 
+        let arr= [33, 34, 35, 37, 38]
+        let n = arr.length + 1;
+  
+        let first = arr[0];  
+        let last = arr[arr.length - 1];   
+        
+        let sumOfIntegers = (n * (first + last)) / 2; 
+        
+        let sumOfArray = arr.reduce((acc, num) => acc + num, 0);
+        let missingNumber = sumOfIntegers - sumOfArray; 
 
-// router.get('/test-underscore', function(req, res){
-//     let result = myUnderscore.first([11,12,23,44,15], 4)
-//     console.log('the result is',result)
-//     res.send('done')
-// })
-
-// router.get('/cohorts', function (request, response){
-//     // logic to get the cohorts from database
-//     // logic tp get only the active cohorts
-//     // logic to get only the cohort with a size than 50
-//     // logic to get only the backend cohorts
-//     response.send(['technetium','nobelium'])
-// })
-
-// router.get('/students', function(req, res){
-//     // receive or access the query params in the code
-//     // write a logic on these query params
-//     // city, score
-//     console.log(req.query)
-//     let requestedCity = req.query.city
-//     let sortField = req.query.sort
-//     // logic to get students
-//     res.send(["Sabiha","Neha","Akash","Sonali"])
-// })
-
-// router.get('/students/:studentName', function(req, res) {
-//     console.log(req.params.studentName)
-//     /// go to database and search for studentName student
-//     // store the data found in this variable - studentDetails
-//     //res.send({data: studentDetails})
-//     res.send('student data')
-// })
-
-const array=["3-Idiots","Avenger:Endgame","Lord of rings","Thor ragnakor"]
-router.get('/movies',function(req,res){
-    res.send(array)
-})
-
-router.get('/movies/:indexNumber',function(req ,res){
-    res.send("you can see the specific movie name through index")
-    // console.log(array[req.params.indexNumber])
-
-    if((req.params.indexNumber<array.length)&&(req.params.indexNumber>-1)){
-        console.log(array[req.params.indexNumber])
-    }else{
-        console.log("use a valid index")
-    }
-})
-
-const filmName=[ {
-    id: 1,
-    name: "The Shining"
-   }, {
-    id: 2,
-    name: "Incendies"
-   }, {
-    id: 3,
-    name: "Rang de Basanti"
-   }, {
-    id: 4,
-    name: "Finding Nemo"
-   }]
-   
-
-router.get('/films',function(req,res){
-    res.send(filmName)
-})
-
-router.get('/films/:filmId',function(req,res){
-    res.send("you can see specific film name with id through valid index")
-    if((req.params.filmId<filmName.length)&&(req.params.filmId>-1)){
-        console.log(filmName[req.params.filmId])
-    }else{
-        console.log("No movie exists with this id")
-    }
-})
+        res.send(  { data: missingNumber  }  );
+});
 
 
 
 
-module.exports = router;
+module.exports = app;

@@ -2,49 +2,55 @@ const express = require('express');
 const { route } = require('express/lib/application');
 const router = express.Router();
 
+let persons= [
+    {
+    name: "PK",
+    age: 10,
+    votingStatus: false
+ },
+ {
+    name: "SK",
+    age: 20,
+    votingStatus: false
+ },
+ {
+    name: "AA",
+    age: 70,
+    votingStatus: false
+ },
+ {
+    name: "SC",
+    age: 5,
+    votingStatus: false
+ },
+ {
+    name: "HO",
+    age: 40,
+    votingStatus: false
+ }
+ ]
 
-let players =
-   [
-       {
-           "name": "manish",
-           "dob": "1/1/1995",
-           "gender": "male",
-           "city": "jalandhar",
-           "sports": [
-               "swimming"
-           ]
-       },
-       {
-           "name": "gopal",
-           "dob": "1/09/1995",
-           "gender": "male",
-           "city": "delhi",
-           "sports": [
-               "soccer"
-           ],
-       },
-       {
-           "name": "lokesh",
-           "dob": "1/1/1990",
-           "gender": "male",
-           "city": "mumbai",
-           "sports": [
-               "soccer"
-           ],
-       },
-   ];  
+ router.post('/votingStatus',function(req, res){
+   const votingAge= req.query.votingAge;
+
+   const eligiblePersons = persons.filter((person)=>{
+       if(person.age >= votingAge){
+           person.votingStatus = true
+       }
+
+       return person
+   })
+
+   const votingPersons = []
+   eligiblePersons.map((person)=>{
+       if(person.votingStatus===true){
+           votingPersons.push(person.name)
+       }
+   })
+
+   res.send({listOfVoters:votingPersons, eligiblePersons:eligiblePersons})
+})
 
 
 
-   router.post('/players', function (req,res) {
-       //LOGIC WILL COME HERE
-        const {name,dob,gender,city,sports} = req.body;
-        const existingPlayer = players.find((player) => player.name === name);
-        if(existingPlayer){
-            return res.send({status:false});
-        }
-        const newPlayer = {name,dob,gender,city,sports};
-        players.push(newPlayer);                
-        res.send({data:players,status:true})
-      });
 module.exports = router;

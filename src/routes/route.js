@@ -5,11 +5,12 @@ const BookController= require("../controllers/bookController")
 
 
 router.post("/createAuthor", BookController.createAuthor)
+router.post("/createPublisher", BookController.createPublisher)
 router.post("/createBook", BookController.createBook)
 
-router.get("/getAuthorById", BookController.getAuthorById)
+router.get("/getBook", BookController.getBook)
 
-router.get("/updateBookName", BookController.updateBookName )
-router.get("/bookAndAuthor", BookController.bookAndAuthor)
+router.put("/updateKey",BookController.updateKey)
+
 
 module.exports = router;

@@ -15,7 +15,26 @@ mongoose.connect("mongodb+srv://bhardwajpreeti684:YQyZDhVN4TvtvSub@cluster0.cwtr
 .then( () => console.log("MongoDb is connected"))
 .catch ( err => console.log(err) )
 
+app.use (
+    function (req, res, next) {
+        console.log ("inside GLOBAL MW");
+        var currDate = new Date();
+        var detailDate=currDate.getDate()+"-"
+        +(currDate.getMonth()+1)+"-"
+        +currDate.getFullYear()+" "
+        +currDate.getHours()+":"
+        +currDate.getMinutes()+":"
+        +currDate.getSeconds();
+        var ip=req.ip
+        var url=req.originalUrl;
+        console.log(`${detailDate},${ip},${url}`)
+        next();
+  }
+  );
+
 app.use('/', route);
+
+
 
 
 app.listen(process.env.PORT || 3000, function () {

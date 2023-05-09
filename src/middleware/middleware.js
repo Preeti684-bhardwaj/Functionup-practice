@@ -1,18 +1,21 @@
+const jwt = require("jsonwebtoken");
 
-const headerValidation = async function (req, res, next) {
-  const isFreeAppUser = req.headers.isfreeappuser; // false
-  const body = req.body;
+const middleware1 = function (req, res, next) {
+  let token = req.headers["x-auth-token"];
+  //   if (!token) token = req.headers["x-auth-token"];
+  if (!token) return res.send({ status: false, msg: "token must be present" });
 
-  if (isFreeAppUser) {
-    if (isFreeAppUser == "true") {
-      body.isFreeAppUser = true;
-    } else {
-      body.isFreeAppUser = false;
-    }
-    next();
-  } else {
-    res.send({ msg: "the request is missing a mandatory header." });
-  }
+  console.log(token);
+
+   jwt.verify(token, "technetium-batch",
+   (error,token)=>{
+    console.log(token,error)
+    if (!token)
+      return res.send({ status: false, msg: "token is invalid" });
+
+  });
+
+
+  next();
 };
-
-module.exports.headerValidation = headerValidation;
+module.exports.middleware1 = middleware1;

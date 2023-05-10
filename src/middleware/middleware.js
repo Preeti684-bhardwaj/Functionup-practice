@@ -18,4 +18,16 @@ const middleware1 = function (req, res, next) {
 
   next();
 };
+
+const middleware2= async  function(req,res,next){
+  let token = req.headers["x-auth-token"];
+  let decodedToken=jwt.verify(token, "technetium-batch")
+  let userToBeModified = req.params.userId
+    let userLoggedIn =decodedToken.userId
+    if(userToBeModified != userLoggedIn) return res.send({status: false, msg: 'User logged is not allowed to modify the requested users data'})
+
+    next()
+
+}
 module.exports.middleware1 = middleware1;
+module.exports.middleware2=middleware2
